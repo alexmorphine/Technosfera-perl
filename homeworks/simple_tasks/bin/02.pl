@@ -22,16 +22,18 @@ run(1, 4) - печатает "2\n" и "3\n"
 
 =cut
 
+
 sub run {
     my ($x, $y) = @_;
-    for (my $i = $x; $i <= $y; $i++) {
-
-        # ...
-        # Проверка, что число простое
-        # ...
-
-	print "$i\n";
+    my $count = 0;
+    for (my $i = $x; $i <= $y; $i++) 
+    {
+        $count = 0;
+        for (my $j = 2; $j <= $i; $j++) {
+            if ($i % $j == 0) {$count++} 
+        }
+        if ($count == 1) {print "$i\n";}
     }
 }
-
+#&run();
 1;

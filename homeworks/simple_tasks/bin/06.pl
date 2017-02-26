@@ -19,17 +19,25 @@ encode('#abc', 1) - печатает '$bcd'
 
 =cut
 
+#my $f = undef;
+#print("specify function N: 1. encode, 2. decode\n");
+#$f = <STDIN>;
+
+#if ($f == "1"){
+#    &encode();}
+#elsif ($f == "2") {&decode();}
+#else {print "no such number";}
+ 
 sub encode {
     my ($str, $key) = @_;
-    my $encoded_str = '';
-
-    # ...
-    # Алгоритм шифрования
-    # ...
-
+    my $encoded_str = "";
+    my @enc;
+    for (my $i = 0; $i < length($str); $i++) {        
+        push(@enc, chr( ((ord(substr($str, $i, 1))) + $key)% 127));}
+    $encoded_str = join("", @enc);    
     print "$encoded_str\n";
 }
-
+#&encode();
 =head1 decode ($encoded_str, $key)
 
 Функция дешифрования ASCII строки $encoded_str ключем $key.
@@ -43,13 +51,12 @@ decode('$bcd', 1) - печатает '#abc'
 
 sub decode {
     my ($encoded_str, $key) = @_;
-    my $str = '';
-
-    # ...
-    # Алгоритм дешифрования
-    # ...
-
+    my $str = "";
+    my @enc;
+    for (my $i = 0; $i < length($encoded_str); $i++) {        
+        push( @enc, chr(((ord(substr($encoded_str, $i, 1))) - $key%127)) );}
+    $str = join("", @enc);
     print "$str\n";
 }
-
+#&decode();
 1;

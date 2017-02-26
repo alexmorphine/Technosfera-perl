@@ -27,12 +27,10 @@ sub run {
     my ($x, $y, $z) = @_;
     my $min = undef;
     my $max = undef;
-
-    # ...
-    # Вычисление минимума и максимума
-    # ...
-
+    my @sorted = sort {$a<=>$b} ($x, $y, $z);
+    $min = $sorted[0];
+    $max = $sorted[2];
     print "$min, $max\n";
 }
-
+#&run();
 1;
