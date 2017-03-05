@@ -47,7 +47,7 @@ l2:     for $i (0..$#members)
             for my $j ($i..$#mh) 
             {
                 ${ $mh[$j] }{gift} = gifts($mh[$j], \@mh); #список, кому можно дарить
-                if (${ $mh[$i] }{sps} ne "" and "$#{${$mh[$i]}{gift}}" == 0) {print "no way to match\n"; return 1}
+                 if ($#{${$mh[0]}{gift}} <= 0 ) {print "no way to match\n"; return 1;} #проверка дост кол-ва участников 
             }             
                        if ($i == $#mh) { #проверка на неразрешимые сочетания
                            for my $k (0..$#mh-1) 
