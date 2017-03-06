@@ -3,6 +3,9 @@ package Anagram;
 use 5.010;
 use strict;
 use warnings;
+use feature "fc";
+use DDP;
+use Encode;
 
 =encoding UTF8
 
@@ -42,12 +45,48 @@ anagram(['пятак', 'ЛиСток', 'пятка', 'стул', 'ПяТаК', '
 sub anagram {
     my $words_list = shift;
     my %result;
+    my %results;
+    my @a;
+    my $j;
 
-    #
-    # Поиск анограмм
-    #
+    for my $i (0..$#$words_list)
+    {
+        if ($j = isanagram(decode('utf8', ${$words_list}[$i]), \@a)) 
+            {;
+               push @{$results{"$a[$j-1]"}}, encode('utf8', fc(decode('utf8', ${$words_list}[$i])));
+             }
+        else
+            {
+                $a[$i] =  join "", sort {$a cmp $b} split(//, fc(decode('utf8', ${$words_list}[$i])));
+                $results{$a[$i]} = [encode('utf8', fc(decode('utf8', ${$words_list}[$i])))];
+            }  
+    }
 
+    for $j (keys %results)
+        {
+            if ($#{$results{$j}} <= 0) {delete $results{$j};}
+        }
+    for my $k (keys %results)
+        {
+            my $temp = ${$results{$k}}[0];
+            my %uniq;
+            $result{$temp} = [sort grep {!$uniq{$_}++} @{$results{$k}}];
+        }
     return \%result;
 }
-
 1;
+
+
+sub isanagram {
+    my ($word, $list) = @_;
+    for my $i (0..$#$list)
+    {   
+        my $temp = join "", sort {$a cmp $b} split(//, fc($word));
+        if (${$list}[$i] eq (join "", sort {$a cmp $b} split(//, fc($word))))
+            {
+                return $i+1;
+            }
+    }
+    return 0;
+}
+
