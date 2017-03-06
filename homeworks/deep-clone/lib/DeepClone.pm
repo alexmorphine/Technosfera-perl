@@ -40,11 +40,6 @@ sub clone {
     if (!defined $orig) {
          return ($cloned = undef);}
 	$cloned = dumper($orig);
-
-
-	# ...
-	# deep clone algorith here
-	# ...
 	return $cloned;
 }
 
@@ -55,18 +50,21 @@ sub clone {
 
 sub dumper {
     my $what = shift; 
-    my $old = shift;
     my $cloned;
     if (my $ref = ref $what) {
         if ($ref eq 'ARRAY') {
+
             $cloned = [];
             push @$cloned, dumper($_) for @$what;
+            return $cloned;
         }
         elsif ($ref eq 'HASH') {
+            $cloned = {};
             while (my ($k,$v) = each %$what) {
-                $cloned = {};
-                $cloned->{$k} = dumper($v) for keys %$what;
+#                print ("$k, $v\n");
+                $cloned->{$k} = dumper($v); 
             }
+            return $cloned;
         }
         else { die "unsupported: $ref"; }
     }
