@@ -66,10 +66,10 @@ sub anagram {
         {
             if ($#{$results{$j}} <= 0) {delete $results{$j};}
         }
-    for my $k (keys %results)
+    for $j (keys %results)
         {
             my %uniq;
-            $result{${$results{$k}}[0]} = [sort grep {!$uniq{$_}++} @{$results{$k}}];
+            $result{${$results{$j}}[0]} = [sort grep {!$uniq{$_}++} @{$results{$j}}];
         }
     p %result;
     return \%result;
