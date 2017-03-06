@@ -36,7 +36,12 @@ use warnings;
 
 sub clone {
 	my $orig = shift;
-	my $cloned;
+    my $cloned; 
+    if (!defined $orig) {
+         return ($cloned = undef);}
+	$cloned = dumper($orig);
+
+
 	# ...
 	# deep clone algorith here
 	# ...
@@ -44,3 +49,30 @@ sub clone {
 }
 
 1;
+
+
+
+
+sub dumper {
+    my $what = shift; 
+    my $old = shift;
+    my $cloned;
+    if (my $ref = ref $what) {
+        if ($ref eq 'ARRAY') {
+            $cloned = [];
+            push @$cloned, dumper($_) for @$what;
+        }
+        elsif ($ref eq 'HASH') {
+            while (my ($k,$v) = each %$what) {
+                $cloned = {};
+                $cloned->{$k} = dumper($v) for keys %$what;
+            }
+        }
+        else { die "unsupported: $ref"; }
+    }
+    else {
+        return $what;
+
+    }
+}
+

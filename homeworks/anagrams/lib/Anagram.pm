@@ -57,21 +57,21 @@ sub anagram {
              }
         else
             {
-                $a[$i] =  join "", sort {$a cmp $b} split(//, fc(decode('utf8', ${$words_list}[$i])));
+                $a[$i] =  join "", sort split(//, fc(decode('utf8', ${$words_list}[$i])));
                 $results{$a[$i]} = [encode('utf8', fc(decode('utf8', ${$words_list}[$i])))];
+
             }  
     }
-
     for $j (keys %results)
         {
             if ($#{$results{$j}} <= 0) {delete $results{$j};}
         }
     for my $k (keys %results)
         {
-            my $temp = ${$results{$k}}[0];
             my %uniq;
-            $result{$temp} = [sort grep {!$uniq{$_}++} @{$results{$k}}];
+            $result{${$results{$k}}[0]} = [sort grep {!$uniq{$_}++} @{$results{$k}}];
         }
+    p %result;
     return \%result;
 }
 1;
@@ -81,8 +81,7 @@ sub isanagram {
     my ($word, $list) = @_;
     for my $i (0..$#$list)
     {   
-        my $temp = join "", sort {$a cmp $b} split(//, fc($word));
-        if (${$list}[$i] eq (join "", sort {$a cmp $b} split(//, fc($word))))
+        if (${$list}[$i] eq (join "", sort split(//, fc($word))))
             {
                 return $i+1;
             }
