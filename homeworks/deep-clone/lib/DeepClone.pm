@@ -38,35 +38,41 @@ sub clone {
 	my $orig = shift;
     my $cloned; 
     if (!defined $orig) {
-         return ($cloned = undef);}
-	$cloned = dumper($orig);
+l1:         return ($cloned = undef);}
+	$cloned = dumper($orig, $cloned);
 	return $cloned;
 }
 
 1;
 
 
-
-
 sub dumper {
     my $what = shift; 
+    my $old = shift;
     my $cloned;
     if (my $ref = ref $what) {
         if ($ref eq 'ARRAY') {
-
-            $cloned = [];
-            push @$cloned, dumper($_) for @$what;
+            $cloned = []; 
+            if (ref $old and $what == $old) 
+                {return $what;}
+            push @$cloned, dumper($_, $what) for @$what;
             return $cloned;
         }
         elsif ($ref eq 'HASH') {
             $cloned = {};
+
             while (my ($k,$v) = each %$what) {
-#                print ("$k, $v\n");
-                $cloned->{$k} = dumper($v); 
+ 
+                if (ref $v and $v == $what) 
+                {  
+                    return {%$what};
+                }
+                $cloned->{$k} = dumper($v, $what); 
             }
             return $cloned;
         }
-        else { die "unsupported: $ref"; }
+#        else {die "unsupported: $ref"; }
+        else { print "unsupported: $ref\n"; goto l1;}
     }
     else {
         return $what;
