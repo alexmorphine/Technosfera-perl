@@ -60,9 +60,7 @@ sub dumper {
         }
         elsif ($ref eq 'HASH') {
             $cloned = {};
-
             while (my ($k,$v) = each %$what) {
- 
                 if (ref $v and $v == $what) 
                 {  
                     return {%$what};
@@ -71,7 +69,6 @@ sub dumper {
             }
             return $cloned;
         }
-#        else {die "unsupported: $ref"; }
         else { print "unsupported: $ref\n"; goto l1;}
     }
     else {
